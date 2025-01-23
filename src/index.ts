@@ -9,8 +9,6 @@ import {
   Request,
 } from "@modelcontextprotocol/sdk/types.js";
 import { config } from "dotenv";
-import fetch from "node-fetch";
-import type { Response } from "node-fetch";
 
 declare global {
   namespace NodeJS {
@@ -56,13 +54,13 @@ type ToolCallParams = {
   arguments?: Record<string, unknown>;
 };
 
-class Veri5ightServer {
+class SafeMcpServer {
   private server: Server;
 
   constructor() {
     // Initialize server
     this.server = new Server(
-      { name: "veri5ight", version: "1.0.0" },
+      { name: "safe-mcp", version: "1.0.0" },
       { capabilities: { tools: {} } }
     );
 
@@ -109,7 +107,7 @@ class Veri5ightServer {
         {
           name: "getSafeTransactions",
           description: "Get all transactions for a Safe address",
-          parameters: {
+          inputSchema: {
             type: "object",
             properties: {
               address: {
@@ -131,7 +129,7 @@ class Veri5ightServer {
         {
           name: "getMultisigTransaction",
           description: "Get details of a specific multisig transaction",
-          parameters: {
+          inputSchema: {
             type: "object",
             properties: {
               safeTxHash: {
@@ -145,7 +143,7 @@ class Veri5ightServer {
         {
           name: "decodeTransactionData",
           description: "Decode transaction data using Safe API",
-          parameters: {
+          inputSchema: {
             type: "object",
             properties: {
               data: {
@@ -238,5 +236,5 @@ class Veri5ightServer {
 }
 
 // Create and start server
-const server = new Veri5ightServer();
+const server = new SafeMcpServer();
 server.run().catch(console.error);
